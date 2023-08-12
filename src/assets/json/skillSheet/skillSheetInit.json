@@ -1,0 +1,25 @@
+{
+    "engineerCd": "",
+    "affiliation": "",
+    "age": 0,
+    "sex": "",
+    "hopeOccupation": "",
+    "nearestStation": "",
+    "selfPR": "",
+    "careerLists": [
+        {
+            "workStart": "",
+            "workEnd": "",
+            "customer": "",
+            "business": "",
+            "oS": "",
+            "language": "",
+            "database": "",
+            "environment": "",
+            "workProcess": "",
+            "workDetail": "",
+            "position": "",
+            "memberNun": ""
+          }
+    ]
+}
