@@ -3,7 +3,7 @@ import { Constants} from './common'
 const constants: Constants = {
     menuItems: [
         {
-          name: 'HOME',
+          name: 'SKILL_SHEET',
           url: '/topview/top',
           icon: 'mdi-heart',
         },

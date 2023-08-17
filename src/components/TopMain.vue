@@ -4,9 +4,16 @@
       <div>{{ screenItem.screenItem01 }}</div>
       <!-- プレビューモード -->
       <div v-if="!editMode">
-        <div style="text-align: left;">
-          <v-btn prepend-icon="mdi-file-document-edit-outline" type="button" variant="flat" color="#6162b3" style="color: white; display" @click="changeMode()">{{ screenItem.screenItem22 }}</v-btn> &nbsp;
-          <v-btn prepend-icon="mdi-file-find-outline" type="button" variant="flat" color="#6162b3" style="color: white; display" v-bind:disabled="skillSheet.careerLists == undefined || skillSheet.careerLists.length == 0" @click="">{{ screenItem.screenItem23 }}</v-btn>
+        <div style="text-align: left; display: flex;">
+          <div>
+            <v-btn prepend-icon="mdi-file-document-edit-outline" type="button" variant="flat" color="#6162b3" style="color: white; display" @click="changeMode()">{{ screenItem.screenItem22 }}</v-btn> &nbsp;
+          </div>
+          <!-- <v-btn prepend-icon="mdi-file-find-outline" type="button" variant="flat" color="#6162b3" style="color: white; display" v-bind:disabled="skillSheet.careerLists == undefined || skillSheet.careerLists.length == 0" @click="pdfPreview()">{{ screenItem.screenItem23 }}</v-btn> -->
+          <div>
+            <form :action="pdfPreviewUrl" method="get">
+              <v-btn prepend-icon="mdi-file-find-outline" type="submit" variant="flat" color="#6162b3" style="color: white; display" v-bind:disabled="skillSheet.careerLists == undefined || skillSheet.careerLists.length == 0" >{{ screenItem.screenItem23 }}</v-btn>
+            </form>
+          </div>
         </div><br>
         <v-table>
           <tr>
@@ -247,7 +254,7 @@
                     <v-btn prepend-icon="mdi-database-arrow-down-outline" size="x-large" type="button" variant="flat" color="#6162b3" style="color: white; display" @click="registerUpdate()">登録・更新</v-btn>
                   </template>
                   <!-- ---------------------------------------- -->
-                  <v-card v-if="!loader">
+                  <v-card v-if="updateSucces">
                     <v-card-title class="text-h5">
                       登録・更新完了
                     </v-card-title>
@@ -300,6 +307,8 @@ import skillSheetItem from "../assets/json/skillSheet/skillSheetItem.json";
 import config from "../assets/json/config.json";
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import { routeLocationKey } from 'vue-router';
+import router from '../router';
 
 export default defineComponent({
   name: 'Top', // eslint-disable-line
@@ -316,6 +325,8 @@ export default defineComponent({
       editCareerLists: [{} as EditCareer],
       dialog: false,
       loader: false,
+      updateSucces: false,
+      pdfPreviewUrl: config.url + "/skill/pdfDownload/"
     }
   },
   mounted: async function() {
@@ -325,9 +336,12 @@ export default defineComponent({
         credentials: 'include'
     })
     await(new SkillApi(con).skillGet()).then(response => {
-      console.log(response)
       this.skillSheet = response
-    }).catch(error => {
+    })
+    .catch(error => {
+      if(error.response.status == '401'){
+        router.replace("/")
+      }
     })
     
   },
@@ -429,11 +443,16 @@ export default defineComponent({
         skillSheetParam: this.skillSheet
       }
       await(new SkillApi(con).skillPost(patam)).then(response => {
-        console.log(response)
         if(response.successFlg == "0"){
           this.loader = false
+          this.updateSucces = true
         }
       }).catch(error => {
+        this.loader = false
+        this.dialog = false
+        if(error.response.status == '401'){
+          router.replace("/")
+        }
       })
     },
     changeStringDate(date?: string){
@@ -453,6 +472,20 @@ export default defineComponent({
       }
       return ""
     },
+    // async pdfPreview(){
+    //   const con = new Configuration({
+    //     basePath: config.url,
+    //     credentials: 'include',        
+    //   })
+
+    //   await(new SkillApi(con).skillPdfDownloadGet()).then(response => {
+    //     console.log(response)
+    //   }).catch(error => {
+    //     if(error.response.status == '401'){
+    //       router.replace("/")
+    //     }
+    //   })
+    // },
   }
 });
 </script>

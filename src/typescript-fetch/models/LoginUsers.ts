@@ -30,13 +30,13 @@ export interface LoginUsers {
      * @type {string}
      * @memberof LoginUsers
      */
-    userUji?: string;
+    user?: string;
     /**
      * 
      * @type {string}
      * @memberof LoginUsers
      */
-    userMei?: string;
+    email?: string;
 }
 
 /**
@@ -59,8 +59,8 @@ export function LoginUsersFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     return {
         
         'userId': !exists(json, 'userId') ? undefined : json['userId'],
-        'userUji': !exists(json, 'userUji') ? undefined : json['userUji'],
-        'userMei': !exists(json, 'userMei') ? undefined : json['userMei'],
+        'user': !exists(json, 'user') ? undefined : json['user'],
+        'email': !exists(json, 'email') ? undefined : json['email'],
     };
 }
 
@@ -74,8 +74,8 @@ export function LoginUsersToJSON(value?: LoginUsers | null): any {
     return {
         
         'userId': value.userId,
-        'userUji': value.userUji,
-        'userMei': value.userMei,
+        'user': value.user,
+        'email': value.email,
     };
 }
 

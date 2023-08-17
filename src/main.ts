@@ -3,7 +3,8 @@ import './style.css'
 import App from './App.vue'
 // ----- router ----- //
 import VueRouter from './router'
-// ----- router end -----//
+// ----- store -----//
+import store from './store'
 
 // ----- Vuetify ----- //
 import 'vuetify/styles'
@@ -20,5 +21,13 @@ const vuetify = createVuetify({
 })
 // ----- Vuetify end ----- //
 
+let app = createApp(App)
 
-createApp(App).use(vuetify).use(VueRouter).component('VueDatePicker', VueDatePicker).mount('#app')
+app.config.errorHandler = function(err, vm, info) {
+  console.log(err)
+  console.log(vm)
+  console.log(info)
+  // VueRouter.replace("/")
+}
+
+app.use(vuetify).use(VueRouter).use(store).component('VueDatePicker', VueDatePicker).mount('#app')

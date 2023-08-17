@@ -7,11 +7,17 @@
 <script lang='ts'>
 import { defineComponent } from 'vue';
 import config from "../assets/json/config.json";
+import store from '../store';
 
 export default defineComponent({
   name: 'LoginSuccess',
   components: {
     
+  },
+  data() {
+    return {
+      store: store
+    }
   },
   mounted: async function() {
   var router = this.$router
@@ -24,16 +30,23 @@ export default defineComponent({
         "content-type": "application/json",
       })
     }).then(function (response){
+      console.log(response)
         if (!response.ok) {
           throw new Error(response.statusText);
         }
         response.json().then(data => {
-          console.log(data)
+          store.dispatch('updateUser', data.user)
+          store.dispatch('updateUserId', data.userId);
+          store.dispatch('updateEmail', data.email);
         })
         router.push("/topview/top")
         
     }).catch(function (error){
-        console.log(error)
+        // 初期画面に遷移
+        store.dispatch('deleteUser')
+        store.dispatch('deleteUserId');
+        store.dispatch('deleteEmail');
+        router.push("/")
     })
   }
 });

@@ -71,6 +71,38 @@ export class SkillApi extends runtime.BaseAPI {
     }
 
     /**
+     * スキルシートのPDFダウンロード
+     * スキルシートPDFダウンロード
+     */
+    async skillPdfDownloadGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["X-API-KEY"] = this.configuration.apiKey("X-API-KEY"); // token authentication
+        }
+
+        const response = await this.request({
+            path: `/skill/pdfDownload/`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.TextApiResponse(response) as any;
+    }
+
+    /**
+     * スキルシートのPDFダウンロード
+     * スキルシートPDFダウンロード
+     */
+    async skillPdfDownloadGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
+        const response = await this.skillPdfDownloadGetRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * スキルシートを登録する
      * スキルシート登録
      */

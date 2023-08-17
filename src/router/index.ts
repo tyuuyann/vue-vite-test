@@ -3,6 +3,7 @@ import HelloWorld from '../components/HelloWorld.vue'
 import LoginSuccess from '../views/LoginSuccess.vue'
 import TopView from '../views/TopView.vue'
 import TopMain from '../components/TopMain.vue'
+import { VueElement } from 'vue'
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -34,8 +35,14 @@ const routes: Array<RouteRecordRaw> = [
         //     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
         //   },
         ]
+      },
+      {
+        name: '*',
+        path: '/',
+        component: HelloWorld
       }
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),

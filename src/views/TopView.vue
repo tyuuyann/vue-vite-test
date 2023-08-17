@@ -5,9 +5,14 @@
       <v-app-bar>
         <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
   
-        <v-toolbar-title>びゅうてぃふぁい</v-toolbar-title>
+        <v-toolbar-title>マイ・サポート</v-toolbar-title>
   
         <div class="flex-grow-1"></div>
+
+        <div>
+          {{ store.getters.getUser }}<br/>
+          {{ store.getters.getEmail }}
+        </div>
   
         <v-btn icon>
           <v-icon>mdi-heart</v-icon>
@@ -57,15 +62,16 @@
 
 <script lang='ts'>
 import { defineComponent } from 'vue';
-
 import constans from '../assets/ts/constants';
+import store from '../store'
 
 export default defineComponent({
   name: 'TopView',
   data() {
     return {
       drawer: false,
-      menuItems: constans.menuItems
+      menuItems: constans.menuItems,
+      store: store,
     }
   },
   // mounted() {
